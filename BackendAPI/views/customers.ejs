@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Customers</title>
+    </head>
+    <body>
+        <h1>Customers List:</h1>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Contact</th>
+                <th>Action</th>
+            </tr>
+            <% all.forEach(function(customer) { %>
+                <tr>
+                    <td><%= customer.id %></td>
+                    <td><%= customer.name %></td>
+                    <td><%= customer.city %></td>
+                    <td><%= customer.street %></td>
+                    <td><%= customer.contact %></td>
+                    <td><a href="/customers/<%= customer.id %>">View</a></td>
+                </tr>
+            <% }); %>
+        </table>
+    </body>
+</html>
