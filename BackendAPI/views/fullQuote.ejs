@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Single Quote Full</title>
+    </head>
+    <body>
+        <p>Status: <%= quote.sanctioned %></p>
+        <hr>
+        <h2>Items:</h2>
+        <ul>
+            <% items.forEach(i => { %>
+                <li><%= i.description %> - $<%= i.price %></li>
+            <% }) %>
+        </ul>
+        <h3>Total: $<%= total %></h3>
+        <hr>
+        <h2>Notes:</h2>
+        <ul>
+            <% notes.forEach(n => { %>
+                <lie><%= n.note %></lie>
+            <% }) %>
+        </ul>
+    </body>
+</html>
