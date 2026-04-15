@@ -1,3 +1,8 @@
+//Author: Riff Talsma
+require('dotenv').config();
+//confirmation of env
+//console.log('BLITZ_HOST: ', process.env.BLITZ_HOST);
+//console.log('DB_HOST: ', process.env.DB_HOST);
 const express = require('express')
 
 const app = express()
@@ -12,8 +17,8 @@ app.use(express.urlencoded({extended: true}));
 
 //controllers
 const customerController = require('./controllers/customerController');
-/*const quoteController = require('./controllers/quoteController');
-const salesController = require('./controllers/salesAssociateController');
+const quoteController = require('./controllers/quoteController');
+/*const salesController = require('./controllers/salesAssociateController');
 const orderController = require('./controllers/orderController');
 const adminController = require('./controllers/adminController');*/
 
@@ -31,7 +36,6 @@ app.get('/customers', (req, res) => {
 });
 
 //quote routes
-/*
 app.get('/quotes', (req, res) => {
     quoteController.getAll((data) => {
         res.render('quotes', {all: data});
@@ -39,12 +43,30 @@ app.get('/quotes', (req, res) => {
 });
 
 //single quote view
-app.get('/quote/:id', (req, res) => {
+app.get('/quotes/:id', (req, res) => {
     quoteController.getById(req.params.id, (data) => {
-        res.render('quoteDetail', {quote:data});
+        res.render('singleQuote', {quote:data});
     });
 })
 
+app.get('/quotes/:id/full', (req, res) => {
+    quoteController.getFullQuote(req.params.id, (data) => {
+        res.render('fullQuote', data);
+    });
+})
+
+//test creation of quote
+app.get('/testCreateQuote', (req, res) => {
+    quoteController.create({
+        customer_id: 1,
+        sales_id: 1
+    }, 
+    (id) => {
+        res.send('Quote created with ID: ' + id);
+    });
+
+});
+/*
 //sales associate route
 app.get('/sales', (req, res) => {
     salesController.getAll((data) => {
