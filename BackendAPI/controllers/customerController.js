@@ -1,3 +1,4 @@
+//Author: Riff Talsma
 const customerModel = require('../models/customerModel');
 
 module.exports = {
