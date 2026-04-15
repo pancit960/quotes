@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sales Associates</title>
+  </head>
+  <body>
+    <h1>Sales Associate List:</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Accumulated Commission</th>
+        <th>Address</th>
+      </tr>
+      <% all.forEach(function(sales) { %>
+                <tr>
+                    <td><%= sales.user_id %></td>
+                    <td><%= sales.name %></td>
+                    <td><%= sales.user_pass %></td>
+                    <td><%= sales.commission %></td>
+                    <td><%= sales.address %></td>
+                </tr>
+        <% }); %>
+    </table>
+  </body>
+</html>
