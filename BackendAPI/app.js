@@ -18,7 +18,8 @@ app.use(express.urlencoded({extended: true}));
 //controllers
 const customerController = require('./controllers/customerController');
 const quoteController = require('./controllers/quoteController');
-/*const salesController = require('./controllers/salesAssociateController');
+const salesAssociateController = require('./controllers/salesAssociateController');
+/*
 const orderController = require('./controllers/orderController');
 const adminController = require('./controllers/adminController');*/
 
@@ -66,13 +67,28 @@ app.get('/testCreateQuote', (req, res) => {
     });
 
 });
-/*
+
 //sales associate route
-app.get('/sales', (req, res) => {
-    salesController.getAll((data) => {
-        res.render('sales', {all: data});
-    });
+app.get("/sales", (req, res) => {
+  salesAssociateController.getAll((data) => {
+    res.render("sales", { all: data });
+  });
 });
+
+//add new sales associate
+app.post("/sales/add", (req, res) => {
+  salesAssociateController.add(req.body, (data) => {
+    res.redirect("/sales");
+  });
+});
+
+//delete existing sales associate
+app.get("/sales/:id/delete", (req, res) => {
+  salesAssociateController.delete(req.params.id, (data) => {
+    res.redirect("/sales");
+  });
+});
+/*
 
 //admin route
 app.get('/admin', (req, res) => {

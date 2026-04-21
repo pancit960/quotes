@@ -14,4 +14,18 @@ module.exports = {
       cb(row);
     });
   },
+
+  //add new associate
+  add: (id, cb) => {
+    salesModel.add(id, (row) => {
+      cb(row);
+    });
+  },
+
+  //delete existing associate
+  delete: (id, cb) => {
+    salesModel.delete(id, (row) => {
+      cb(row);
+    });
+  },
 };
