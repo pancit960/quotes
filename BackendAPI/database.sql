@@ -31,4 +31,13 @@ CREATE TABLE associate_data (
   address VARCHAR(255)
 );
 
+CREATE TABLE orderdb (
+	id INT NOT NULL AUTO_INCREMENT,
+	quotes_id INT,
+	created DATETIME DEFAULT CURRENT_TIMESTAMP,
+	commission INT NOT NULL,
+	quote_amount DECIMAL(11, 2),
+	PRIMARY KEY(id)
+);
+
 ALTER TABLE associate_data AUTO_INCREMENT = 10000001;
