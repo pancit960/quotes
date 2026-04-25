@@ -88,6 +88,13 @@ app.get("/sales/:id/delete", (req, res) => {
     res.redirect("/sales");
   });
 });
+
+//edit existing sales associate
+app.post("/sales/:id/edit", (req, res) => {
+  salesAssociateController.edit(req.body, (data) => {
+    res.redirect("/sales");
+  });
+});
 /*
 
 //admin route

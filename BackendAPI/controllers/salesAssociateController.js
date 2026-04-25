@@ -1,3 +1,5 @@
+// AUTHOR: Leyla Kucukkaya
+
 const salesModel = require("../models/salesModel");
 
 module.exports = {
@@ -25,6 +27,12 @@ module.exports = {
   //delete existing associate
   delete: (id, cb) => {
     salesModel.delete(id, (row) => {
+      cb(row);
+    });
+  },
+
+  edit: (id, cb) => {
+    salesModel.edit(id, (row) => {
       cb(row);
     });
   },
