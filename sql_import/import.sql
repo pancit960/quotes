@@ -1,9 +1,11 @@
+/* AUTHOR: Leyla Kucukkaya */
+
 USE csci467proj;
 
-INSERT INTO associate_data (name, user_pass, commission, address)
+INSERT INTO associate_data (name, username, user_pass, email_addr, address, commission)
 VALUES 
-('Apple Banana', 'applePass123', .01, '123 Hashbrown Time'),
-('Orange Grape', '0)0)0)0)', 12.34, '123455677 ABC'),
-('Straw Berry', 'password', 1234.56, '456 Tree'),
-('Potato Tomato', 'QcU74nc)%f', 0, '1Hhhhhhhh'),
-('Apple Sauce', 'passwword', 11111.11, 'NIU');
+('Apple Banana', 'AppleBanana', 'applePass123', 'apple.banana@gmail.com', '123 Hashbrown Time', 0.01),
+('Orange Grape', 'OrangeGrape', 'orangePass456', 'orange.grape@gmail.com', '123455677 ABC', 12.34),
+('Straw Berry', 'StrawBerry', 'strawPass789', 'straw.berry@gmail.com', '456 Tree', 1234.56),
+('Potato Tomato', 'PotatoTomato', 'potatoPass012', 'potato.tomato@gmail.com', '1Hhhhhhhh', 0.00),
+('Apple Sauce', 'AppleSauce', 'applePass345', 'apple.sauce@gmail.com', 'NIU', 11111.11);

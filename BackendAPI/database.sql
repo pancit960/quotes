@@ -4,15 +4,16 @@ CREATE DATABASE IF NOT EXISTS csci467proj;
 USE csci467proj;
 
 /*Add into associates data: email. May need more based on other needs*/
+/* AUTHOR: Leyla Kucukkaya */
 CREATE TABLE associate_data (
-  id INT NOT NULL UNIQUE PRIMARY KEY,
+  id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   username VARCHAR(255) UNIQUE NOT NULL,
   user_pass VARCHAR(255) NOT NULL,
   email_addr VARCHAR(100) NOT NULL,
   commission DECIMAL(11,2) NOT NULL DEFAULT 0.00,
   address VARCHAR(255)
-);
+) AUTO_INCREMENT = 10000001;
 
 /*add more info into quotes, need: customer email, statuses, discounts, subtotal, commission details*/
 /* maybe dates for each stage */
