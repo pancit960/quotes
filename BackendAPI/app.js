@@ -95,14 +95,11 @@ app.post("/sales/:id/edit", (req, res) => {
     res.redirect("/sales");
   });
 });
-/*
 
 //admin route
 app.get('/admin', (req, res) => {
-    adminController.dashboard((data) => {
-        res.render('admin', {data});
-    });
-});*/
+    res.render('admin');
+});
 
 //start server
 app.listen(port, () => {
