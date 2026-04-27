@@ -1,8 +1,4 @@
-/**
- * routes/adminRoutes.js
- * Administrative interface — sales associate CRUD + quote search/delete.
- */
-
+//admin interface and admin quote search
 const express = require("express");
 const salesAssociateController = require("../controllers/salesAssociateController");
 const quoteController = require("../controllers/quoteController");
