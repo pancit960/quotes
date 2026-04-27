@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quotes</title>
+    </head>
+    <body>
+        <h1>Quotes List</h1>
+        <ul>
+            <% if (all && all.length > 0) { %>
+                <% all.forEach(q => { %>
+                    <li>
+                        Quote ID: <%= q.id %> |
+                        Customer: <%= q.customer_id %> |
+                        Status: <%= q.sanctioned %>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li>No quotes found</li>
+            <% } %>
+        </ul>
+    </body>
+</html>
