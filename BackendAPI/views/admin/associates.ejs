@@ -1,0 +1,52 @@
+<!-- AUTHOR: Leyla Kucukkaya -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sales Associates</title>
+  </head>
+  <body>
+    <h1>Sales Associate List:</h1>
+    <table>
+      <thead>
+        <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Accumulated Commission</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% associates.forEach(function(sales) { %>
+                <tr>
+                  <form action="/admin/associates/<%= sales.id %>/edit" method="POST">
+                    <td><input type="text" name="id" value="<%= sales.id %>" readonly /></td>
+                    <td><input type="text" name="name" value="<%= sales.name %>"  /></td>
+                    <td><input type="text" name="username" value="<%= sales.username %>"  /></td>
+                    <td><input type="password" name="password" value="<%= sales.user_pass %>"  /></td>
+                    <td><input type="number" name="commission" value="<%= sales.commission %>"  /></td>
+                    <td><input type="text" name="address" value="<%= sales.address %>"  /></td>
+                    <td><input type="text" name="email_addr" value="<%= sales.email_addr %>"  /></td>
+                    <td><button type="submit">Edit Row</button></td>
+                    <td><a href="/admin/associates/delete/<%= sales.id %>">Delete</a></td>
+                  </form>
+                </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <h1>Add New Associate:</h1>
+    <form action="/admin/associates" method="POST">
+      <input type="text" name="name" placeholder="Name" required/>
+      <input type="text" name="username" placeholder="Username" required/>
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="number" name="commission" placeholder="Accumulated Commission" />
+      <input type="text" name="address" placeholder="Address" required />
+      <input type="text" name="email_addr" placeholder="Email" required />
+      <button type="submit">Add Associate</button>
+    </form>
+  </body>
+</html>
