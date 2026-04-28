@@ -44,7 +44,7 @@ app.use(session({
 //redirect index / to login page
 app.get('/', (req, res) => res.redirect('/auth/login'));
 app.use('/auth', authViewRoutes);
-app.use('/associate', associateViewRoutes);
+app.use('/associates', associateViewRoutes);
 
 //routes
 app.use('/auth', authRoutes);
