@@ -1,0 +1,135 @@
+<!--Fitz Ramirez-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Sanction Quotes </title>
+    </head>
+
+    <body>
+        <a href = "/process">process</a>
+
+        <div class="content">
+            <h1>List of finalized quotes:</h1>
+            <table id="quotes-table">
+                <tbody>
+                <!-- EJS loop — same pattern as process.ejs -->
+                    <% quotes.forEach(q => { %>
+                        <tr>
+                            <td>
+                                <%= q.id %>
+                                (<%= q.finalized_at ? q.finalized_at.toISOString().slice(0,10) : '' %>):
+                                <%= q.associate_name %> - <%= q.customer_name %>
+                            </td>
+                            <td>$<%= parseFloat(q.final_total).toFixed(2) %></td>
+                            <td>
+                                <button onclick="openModal(<%= q.id %>)">sanction</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <p><%= quotes.length %> quote(s) found</p>
+        </div>
+
+        <!-- modal — same structure as process.ejs -->
+        <div id="modal-overlay" style="display:none">
+            <div id="modal">
+                <button onclick="closeModal()">X</button>
+
+                <h2 id="modal-title"></h2>
+                <p>Email: <input type="text" id="modal-email" readonly></p>
+
+                <h3>LINE ITEMS:</h3>
+                <table><tbody id="modal-items-body"></tbody></table>
+
+                <h3>SECRET NOTES:</h3>
+                <div id="modal-notes"></div>
+
+                <p>Discount: <span id="modal-discount"></span></p>
+                <p><strong>Amount: <span id="modal-amount"></span></strong></p>
+
+                <hr>
+                <p>
+                    Sanction this quote:
+                    <button id="sanction-btn" onclick="sanctionQuote()">Sanction</button>
+                </p>
+            </div>
+        </div>
+
+        <script>
+            let currentQuoteId = null;
+            //same openModal pattern as process.ejs
+            function openModal(quoteId){
+                currentQuoteId = quoteId;
+                fetch('/sanction/' + quoteId)
+                    .then(r => r.json())
+                    .then(data => {
+                        document.getElementById('modal-title').textcontent = 
+                            'Quote for: ' + data.quote.customer_name;
+                        document.getElementById('modal-email').value =
+                            data.quote.customer_email;
+                        document.getElementById('modal-discount').textContent =
+                            data.quote.discount_val + ' (' + data.quote.discount_type + ')';
+                        document.getElementById('modal-amount').textContent = 
+                            '$' + parseFloat(data.quote.final_total).toFixed(2);
+                        
+                            const itemBody = document.getElementById('modal-items-body');
+                            itemBody.innerHTML = '';
+                            data.lineItems.forEach(item => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${item.description}</td>
+                                    <td>$${parseFloat(item.price).toFixed(2)}</td>
+                                `;
+                                itemBody.appendChild(row);
+                            });
+
+                            const notesDiv = document.getElementById('modal-notes');
+                            notesDiv.innerHTML = '';
+                            data.notes.forEach(note => {
+                                const p = document.createElement('p');
+                                p.textContent = note.note_author + ': ' + note.note;
+                                noteDiv.appendChild(p);
+                            });
+
+                            document.getElementById('modal-overlay').style.display = 'flex';
+                    })
+                    .catch(err => console.error('Failed to load quote:', err))
+            }
+
+            function closeModal(){
+                document.getElementById('modal-overlay').style.display = 'none';
+                currentQuoteId = null;
+            }
+            //sanction Post to /sanction/approve
+            //on success the quote moves to 'sanctioned' and disappears from this list
+            function sanctionQuote(){
+                if(!currentQuoteId) return;
+
+                const btn = document.getElementById('sanction-btn');
+                btn.disabled = true;
+                btn.textContent = 'Sanctioning...';
+
+                fetch('/sanction/approve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({quoteId: currentQuoteId })
+                })
+                    .then(r => r.json())
+                    .then(data => {
+                        if(data.error) throw new Error(data.error);
+                        alert('Quote is sanctioned so check the process orders page');
+                        closeModal();
+
+                        //reload so sanction quote is gone
+                        location.reload();
+                    })
+                    .catch(err => {
+                        alert('Error: ' + err.message);
+                        btn.disabled = false;
+                        btn.textContent = 'Sanction';
+                    });
+            }
+        </script>
+    </body>
+</html>
