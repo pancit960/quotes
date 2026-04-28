@@ -51,8 +51,17 @@ router.get('/quotes/new', (req, res) => {
 //post /associate/quotes
 router.post('/quotes', async(req, res) => {
     try {
-        const {customerId, customerEmail} = req.body;
+        console.log('[DEBUG] session user:', req.session.user);
+        console.log('[DEBUG] req.body:', req.body);
+
+
+        const customerId = parseInt(req.body.customerId, 10);
+        const customerEmail = req.body.customerEmail;
+
+        console.log('[DEBUG] parsed customerId:', customerId);
+
         const customer = await customerModel.findById(customerId);
+        console.log('[DEBUG] customer found:', customer);
 
         if(!customer) {
             return res.render('associate/quote-new', {title: 'New Quote', error: 'Could not find customer'});

@@ -25,9 +25,9 @@ async function findById(id) {
 }
 
 //create quote desc
-async function create({quoteId, description, price}) {
+async function create({quote_id, description, price}) {
     const result = await query(`INSERT INTO quote_desc (quote_id, description, price) 
-        VALUES (?, ?, ?)`, [quoteId, description, price]);
+        VALUES (?, ?, ?)`, [quote_id, description, price]);
     return findById(result.insertId);
 }
 

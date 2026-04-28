@@ -35,10 +35,6 @@
                         <td><%= new Date(quote.created_at).toLocaleDateString() %></td>
                         <td>
                             <a href="/associate/quotes/<%= quote.id %>">View</a>
-                            <% if (quote.quote_status === 'draft') { %>
-                                &nbsp;|&nbsp;
-                                <a href="/associate/quotes/<%= quote.id %>/edit">Edit</a>
-                            <% } %>
                         </td>
                     </tr>
                 <% }) %>

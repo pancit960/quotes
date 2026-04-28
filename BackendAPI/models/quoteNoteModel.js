@@ -20,10 +20,10 @@ async function findByQuote(quoteId) {
 }
 
 //create new note
-async function create({quoteId, noteText, associateId = null, authorLabel = 'HQ'
+async function create({quote_id, noteText, associate_id = null, authorLabel = 'HQ'
 }) {
   const result = await query(`INSERT INTO secret_notes (quote_id, associate_id, note_author, note) 
-    VALUES (?, ?, ?, ?)`, [quoteId, associateId, authorLabel, noteText]);
+    VALUES (?, ?, ?, ?)`, [quote_id, associate_id, authorLabel, noteText]);
 
   const rows = await query(`SELECT * FROM secret_notes WHERE id = ?`, [result.insertId]);
 

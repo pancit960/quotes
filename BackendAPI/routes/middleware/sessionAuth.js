@@ -17,7 +17,7 @@ function requireSessionRole(...roles) {
         }
 
         if(!roles.includes(req.session.user.role)) {
-            return res.status(403).senc('Access denied');
+            return res.status(403).send('Access denied');
         }
         res.locals.user = req.session.user;
         next();

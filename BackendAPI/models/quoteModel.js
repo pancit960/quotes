@@ -99,17 +99,17 @@ async function findFinished() {
 
 //create a quote
 async function create({
-    associateId, customerId, customerName, customerEmail
+    associate_id, customer_id, customer_name, customer_email
 }) {
     const result = await query(`INSERT INTO quotes 
         (associate_id, customer_id, customer_name, customer_email) 
-        VALUES (?, ?, ? , ?)`, [associateId, customerId, customerName, customerEmail]);
+        VALUES (?, ?, ? , ?)`, [associate_id, customer_id, customer_name, customer_email]);
     return findById(result.insertId);
 }
 
 //update quote
 async function update(id, data) {
-    const allowed = ['customer_email', 'discount_type', 'discount_val, discount_final', 
+    const allowed = ['customer_email', 'discount_type', 'discount_val', 'discount_final', 
         'quote_status', 'finalized_at', 'sanctioned_at', 'ordered_at', 'commission_pct', 
         'commission_total', 'processing_date'];
     const fields = [];
