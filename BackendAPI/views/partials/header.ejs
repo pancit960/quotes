@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            <%= title %> | Chicken Nugget Plant Repair
+        </title>
+    </head>
+    <body>
+        <% if(typeof user !== 'undefined' && user) { %>
+        <nav>
+            <span>
+                <strong>Chicken Nugget Plant Repair</strong>
+            </span>
+            <span>
+                Logged in as <strong><%= user.name %></strong> (<%= user.role %>)
+                &nbsp;|&nbsp;
+                <a href="/auth/logout">Logout</a>
+            </span>
+        </nav>
+        <% } %>

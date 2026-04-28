@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sales Associates</title>
+  </head>
+  <body>
+    <h1>Sales Associate List:</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Accumulated Commission</th>
+        <th>Address</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      <% all.forEach(function(sales) { %>
+                <tr>
+                    <td><input type="text" value="<%= sales.user_id %>" readonly /></td>
+                    <td><input type="text" value="<%= sales.name %>"  /></td>
+                    <td><input type="password" value="<%= sales.user_pass %>"  /></td>
+                    <td><input type="number" value="<%= sales.commission %>"  /></td>
+                    <td><input type="text" value="<%= sales.address %>"  /></td>
+                    <!-- EDIT BUTTON DOESN'T WORK YET -->
+                    <td><a href="/sales/<%= sales.user_id %>/edit">Edit Row</a></td>
+                    <td><a href="/sales/<%= sales.user_id %>/delete">Delete</a></td>
+
+                </tr>
+        <% }); %>
+    </table>
+    <h1>Add New Associate:</h1>
+    <form action="/sales/add" method="POST">
+      <input type="text" name="name" placeholder="Name" required/>
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="number" name="commission" placeholder="Accumulated Commission" />
+      <input type="text" name="address" placeholder="Address" required />
+      <button type="submit">Add Associate</button>
+    </form>
+  </body>
+</html>
