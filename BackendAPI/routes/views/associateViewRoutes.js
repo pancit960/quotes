@@ -4,7 +4,7 @@ const quoteModel = require('../../models/quoteModel');
 const itemModel = require('../../models/quoteItemModel');
 const noteModel = require('../../models/quoteNoteModel');
 const customerModel = require('../../models/customerModel');
-const {requireSessionRole} = require('../middleware/auth');
+const {requireSessionRole} = require('../middleware/sessionAuth');
 const router = express.Router();
 
 //all associate routes need to login as an associate
