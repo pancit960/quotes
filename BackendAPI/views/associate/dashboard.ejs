@@ -3,7 +3,7 @@
     <h2>My Quotes</h2>
     <a href="/associate/quotes/new"> + New Quote </a>
 
-    <& if(typeof success !== 'undefined' && success) { %>
+    <% if(typeof success !== 'undefined' && success) { %>
         <p style="color:green;"><%= success %></p>
     <% } %>
 
@@ -24,11 +24,27 @@
                 </tr>
             </thead>
             <tbody>
-                <% quotes.forEach(function(quote)) { %>
+                <% quotes.forEach(function(quote) { %>
                     <tr>
                         <td><%= quote.id %></td>
+                        <td><%= quote.customer_name %></td>
+                        <td><%= quote.customer_email %></td>
+                        <td><%= quote.quote_status %></td>
+                        <td>$<%= parseFloat(quote.subtotal).toFixed(2) %></td>
+                        <td>$<%= parseFloat(quote.final_total).toFixed(2) %></td>
+                        <td><%= new Date(quote.created_at).toLocaleDateString() %></td>
+                        <td>
+                            <a href="/associate/quotes/<%= quote.id %>">View</a>
+                            <% if (quote.quote_status === 'draft') { %>
+                                &nbsp;|&nbsp;
+                                <a href="/associate/quotes/<%= quote.id %>/edit">Edit</a>
+                            <% } %>
+                        </td>
                     </tr>
+                <% }) %>
             </tbody>
         </table>
-
+    <% } %>
 </main>
+
+<%- include('../partials/footer') %>
