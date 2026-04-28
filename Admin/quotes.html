@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quotes Panel</title>
+
+    <link rel="stylesheet" href="everything.css">
+
+    <!-- Styling for this page -->
+    <style>
+    /* Top bar */
+    .topbar {
+        background: #7667c1;
+        padding: 12px 20px; /* Thickness of bar */
+
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    /* Page title */
+    .topbar h2 {
+        color: white;
+        font-size: 18px;
+    }
+
+    /* Back button */
+    .back-btn {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px; /* how round button is */
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .back-btn:hover {
+        background: rgba(255,255,255,0.35);
+    }
+
+    .quote {
+        display: flex; 
+        justify-content: space-around; /* space between text and view btn */
+        align-items: center;
+        padding: 12px 0; /*space from thing above*/
+        border-bottom: 1px solid #7a6588; /* lil outline */
+        border-top: 1px solid #7a6588; /* lil outline */
+    }
+    
+
+    .right {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .right button {
+        cursor: pointer;
+    }
+
+</style>
+
+</head> <!-- EnD of head-->
+
+<body>
+
+    <!-- Top navigation bar with title / back button-->
+    <div class="topbar">
+            <a href="admin.html" class="back-btn"> ← Admin</a>
+            <h2> Quotes Panel </h2>
+    </div>
+
+    <!-- Start of quotes menu-->
+
+    <div class="content">
+
+        <h3> List of all quotes: </h3>
+
+        <!-- Filter menu-->
+         <div class="filters">
+            <!-- BY DATE-->
+            Date from: <input type="date">
+            To: <input type="date">
+
+            <br>
+
+            <!-- STATUS DROPDOWN-->
+            Status: <select> 
+                <option> all </option>
+                <option> finalized </option>
+                <option> sanctioned </option> 
+                <option> ordered </option>
+            </select>
+            <!-- ASSOCIATE DROPDOWN-->
+            Associate <select> 
+                <option> X associate </option> 
+                <!-- NEEDS BACKEND TO RETRIEVE ASSOCIATES FROM DB-->
+            </select>
+            <!-- SELECT CUST DROPDOWND-->
+            Customer: <select> 
+                <option> X Customer </option>
+                <!-- NEEDS BACKEND TO RETRIEVE CUSTOMERS FROM BLITZ-->
+            </select>
+        
+         </div> <!-- END OF FILTERS-->
+
+        <br> 
+
+         <div class="quote"> <!-- START OF LIST QUOTE-->
+
+            <!-- example-->
+             <div> 
+                1 (2021-23-80): Rue Bennett - companyName 
+             </div>
+
+             <div class="right">
+                $9000.00 (ordered)
+                <button> View</button>
+             </div>
+
+         </div> <!-- END OF QUOTE-->
+
+         <br> 
+         <h4>[#] quotes found</h4> <!-- WILL SHOW HOW MANY ASSOCIATES FOUN -->
+    </div> <!-- END OF CONTENT-->
+</body>
+</html>

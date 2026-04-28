@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Associates Panel</title>
+
+    <link rel="stylesheet" href="everything.css">
+
+    <!-- Styling for this page -->
+    <style>
+    /* Top bar */
+    .topbar {
+        background: #7667c1;
+        padding: 12px 20px; /* Thickness of bar */
+
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    /* Page title */
+    .topbar h2 {
+        color: white;
+        font-size: 18px;
+    }
+
+    /* Back button */
+    .back-btn {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px; /* how round button is */
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .back-btn:hover {
+        background: rgba(255,255,255,0.35);
+    }
+    /* Content has associates info */
+    .content { 
+        width: 800px;
+        max-width: 90%;
+        margin: 30px 0 0 40px;   
+    }
+
+    h3 {
+        margin-bottom: 10px;
+    }
+
+    /* Associate rows */
+    .associate {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 12px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .actions button {
+        margin-left: 8px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    /* Form */
+    .form-row {
+        margin-top: 20px;
+    }
+
+    .form-row input {
+        padding: 6px;
+        margin-right: 10px;
+    }
+
+    .form-row button {
+        padding: 6px 10px;
+    }
+</style>
+
+</head> <!-- EnD of head-->
+
+<body>
+
+    <!-- Top navigation bar with title / back button-->
+    <div class="topbar">
+            <a href="admin.html" class="back-btn"> ← Admin</a>
+            <h2> Associates Panel </h2>
+    </div>
+
+    <!-- Associate Info : List + Add associates -->
+    <div class="content">
+        <h3>Our Sales Associates</h3>
+        <hr>
+
+        <!-- Example associate -->
+        <div class="associate">
+            <div>
+                [# on list] - [Name of associate]
+            </div>
+
+            <div class="actions">
+                 Commission: $ 0.00 
+                <button>Edit</button>
+                <button>Delete</button>
+            </div>
+        </div>
+
+
+        <hr>
+
+        <p>[#] associates found</p> <!-- WILL SHOW HOW MANY ASSOCIATES FOUND -->
+
+        <!-- Add new associates -->
+        <div class="form-row">
+            Name:
+            <input type="text">
+
+            Password:
+            <input type="password">
+
+            <button>Add new associate</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
