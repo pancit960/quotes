@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h2>Sales Associates</h2>
+    <a href="/admin/dashboard">&larr; Back to Admin</a>
+    &nbsp;|&nbsp;
+    <a href="/admin/associates/new">+ New Associate</a>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+        <p style="color:green;"><%= success %></p>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+
+    <br />
+
+    <% if (associates.length === 0) { %>
+        <p>No associates found.</p>
+    <% } else { %>
+        <table border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Commission</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% associates.forEach(function(a) { %>
+                    <tr>
+                        <td><%= a.id %></td>
+                        <td><%= a.name %></td>
+                        <td><%= a.username %></td>
+                        <td><%= a.email_addr %></td>
+                        <td><%= a.address || '—' %></td>
+                        <td>$<%= parseFloat(a.commission).toFixed(2) %></td>
+                        <td>
+                            <a href="/admin/associates/<%= a.id %>/edit">Edit</a>
+                            &nbsp;|&nbsp;
+                            <form method="POST" action="/admin/associates/<%= a.id %>/delete" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Delete this associate?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</main>
+
+<%- include('../partials/footer') %>

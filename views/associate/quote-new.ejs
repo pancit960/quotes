@@ -1,0 +1,87 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h2>New Quotes</h2>
+    <a href="/associate/dashboard">&larr; Back to My Quotes</a>
+    <br /><br />
+
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;">
+            <%=error %>
+        </p>
+    <% } %>
+
+    <!--customer search function-->
+    <h3>1. Find Customer:</h3>
+    <input type="text" id="customerSearch" placeholder="Search by name, city, or contact" />
+    <button type="button" onclick="searchCustomers()">Search</button>
+    
+    <div id="searchResults"></div>
+
+    <!--quote form shown after a customer is selected-->
+    <div id="quoteForm" style="display:none;">
+        <hr />
+        <h3>2. Quote Details:</h3>
+        <form method="POST" action="/associate/quotes">
+            <input type="hidden" id="customerId" name="customerId" />
+            <p>
+                <strong>Customer:</strong> <span id="selectedCustomerName"></span><br />
+                <strong>City:</strong> <span id="selectedCustomerCity"></span><br />
+                <strong>Contact:</strong> <span id="selectedCustomerContact"></span>
+            </p>
+            <div>
+                <label for="customerEmail">Customer's Email for quote: </label><br />
+                <input type="email" id="customerEmail" name="customerEmail" required />
+            </div>
+            <br />
+            <button type="submit">Create Quote</button>
+        </form>
+    </div>
+</main>
+
+<!--SCript to search customers-->
+<script>
+    async function searchCustomers() {
+        const term = document.getElementById('customerSearch').value.trim();
+        if(!term) {
+            return;
+        }
+
+        const res = await fetch(`/associate/customers/search?q=${encodeURIComponent(term)}`);
+        const data = await res.json();
+        const div = document.getElementById('searchResults');
+
+        if(!data.success || data.data.length === 0) {
+            div.innerHTML = '<p>No customers found.</p>';
+            return;
+        }
+
+        let html = '<br /><table border="1" cellpadding="6" cellspacing="0"><thead><tr><th>Name</th><th>City</th><th>Street</th><th>Contact</th><th></th></tr></thead><tbody>';
+        data.data.forEach(function(c) {
+            html += `<tr>
+                <td>${c.name}</td>
+                <td>${c.city || ''}</td>
+                <td>${c.street || ''}</td>
+                <td>${c.contract || ''}</td>
+                <td><button type="button" onclick="selectCustomer(${c.id}, '${c.name.replace(/'/g,"\\'")}', '${(c.city||'').replace(/'/g,"\\'")}', '${(c.contact||'').replace(/'/g,"\\'")}')">Select</button></td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+        div.innerHTML = html;
+    }
+
+    function selectCustomer(id, name, city, contact) {
+        document.getElementById('customerId').value = id;
+        document.getElementById('selectedCustomerName').textContent = name;
+        document.getElementById('selectedCustomerCity').textContent  = city;
+        document.getElementById('selectedCustomerContact').textContent = contact;
+        document.getElementById('quoteForm').style.display = 'block';
+        document.getElementById('searchResults').innerHTML = '';
+        document.getElementById('customerSearch').value  = name;
+    }
+
+</script>
+ 
+<%- include('../partials/footer') %>
+
+

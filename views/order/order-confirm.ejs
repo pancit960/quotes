@@ -1,0 +1,82 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h2>Place Order — Quote #<%= quote.id %></h2>
+    <a href="/orders">&larr; Back to Orders</a>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+
+    <!--quote summary-->
+    <h3>Quote Summary</h3>
+    <table border="1" cellpadding="6" cellspacing="0">
+        <tr><th>Customer</th><td><%= quote.customer_name %></td></tr>
+        <tr><th>Customer Email</th><td><%= quote.customer_email %></td></tr>
+        <tr><th>Associate</th><td><%= quote.associate_name %></td></tr>
+        <tr><th>Sanctioned</th><td><%= quote.sanctioned_at ? new Date(quote.sanctioned_at).toLocaleDateString() : '—' %></td></tr>
+    </table>
+
+    <br />
+
+    <!--quote line items -->
+    <h3>Line Items</h3>
+    <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr><th>#</th><th>Description</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+            <% items.forEach(function(item, i) { %>
+                <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= item.description %></td>
+                    <td>$<%= parseFloat(item.price).toFixed(2) %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <br />
+    <table cellpadding="4">
+        <tr><td><strong>Subtotal</strong></td><td>$<%= parseFloat(quote.subtotal).toFixed(2) %></td></tr>
+        <% if (quote.discount_val && parseFloat(quote.discount_val) > 0) { %>
+            <tr><td><strong>Quote Discount</strong></td><td>-$<%= parseFloat(quote.subtotal - quote.final_total).toFixed(2) %></td></tr>
+        <% } %>
+        <tr><td><strong>Quote Total</strong></td><td>$<%= parseFloat(quote.final_total).toFixed(2) %></td></tr>
+    </table>
+
+    <hr />
+
+    <!--order placing form-->
+    <h3>Confirm Order</h3>
+    <p>Once submitted, this order will be sent to the external processing system and the customer will be emailed.</p>
+
+    <form method="POST" action="/orders/<%= quote.id %>">
+        <div>
+            <label>Additional Final Discount ($) <em>(optional)</em></label><br />
+            <input type="number" name="quoteDiscount" value="0" step="0.01" min="0" />
+        </div>
+        <br />
+        <p id="finalTotal">Final Amount: $<%= parseFloat(quote.final_total).toFixed(2) %></p>
+        <br />
+        <button type="submit" onclick="return confirm('Submit this order to the processing system?')">
+            Confirm &amp; Place Order
+        </button>
+    </form>
+
+</main>
+
+<script>
+    //live update final total as discount is typed
+    const discountInput = document.querySelector('input[name="quoteDiscount"]');
+    const quoteTotal = <%= parseFloat(quote.final_total) %>;
+    const finalTotalEl = document.getElementById('finalTotal');
+
+    discountInput.addEventListener('input', function() {
+        const discount = parseFloat(this.value) || 0;
+        const final    = Math.max(0, quoteTotal - discount).toFixed(2);
+        finalTotalEl.textContent = `Final Amount: $${final}`;
+    });
+</script>
+
+<%- include('../partials/footer') %>

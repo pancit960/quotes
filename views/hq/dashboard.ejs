@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h1>HQ Dashboard</h1>
+
+    <!--flash messages -->
+    <% if (success) { %>
+        <p style="color: green;"><%= success %></p>
+    <% } %>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <h2>Finalized Quotes (Pending HQ Approval)</h2>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Associate</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (!quotes || quotes.length === 0) { %>
+                <tr>
+                    <td colspan="8">No finalized quotes to review.</td>
+                </tr>
+            <% } %>
+
+            <% quotes.forEach(q => { %>
+                <tr>
+                    <td><%= q.id %></td>
+                    <td><%= q.customer_name || 'N/A' %></td>
+                    <td><%= q.customer_email || 'N/A' %></td>
+                    <td><%= q.associate_name || ('Associate #' + q.associate_id) %></td>
+                    <td>$<%= q.total_price %></td>
+                    <td><%= q.quote_status %></td>
+                    <td><%= new Date(q.created_at).toLocaleString() %></td>
+                    <td>
+                        <a href="/hq/quotes/<%= q.id %>">Review</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</main>
+
+<%- include('../partials/footer') %>

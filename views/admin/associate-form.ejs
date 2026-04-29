@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h2><%= associate ? 'Edit Associate' : 'New Associate' %></h2>
+    <a href="/admin/associates">&larr; Back to Associates</a>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+
+    <br />
+
+    <form method="POST" action="<%= associate ? '/admin/associates/' + associate.id : '/admin/associates' %>">
+
+
+        <div>
+            <label>Name</label><br />
+            <input type="text" name="name" value="<%= associate ? associate.name : '' %>" required />
+        </div>
+        <br />
+
+        <div>
+            <label>Username</label><br />
+            <input type="text" name="username" value="<%= associate ? associate.username : '' %>" required />
+        </div>
+        <br />
+
+        <div>
+            <label>Email</label><br />
+            <input type="email" name="email_addr" value="<%= associate ? associate.email_addr : '' %>" required />
+        </div>
+        <br />
+
+        <div>
+            <label>Address</label><br />
+            <input type="text" name="address" value="<%= associate ? (associate.address || '') : '' %>" style="width:300px;" />
+        </div>
+        <br />
+
+        <div>
+            <label>Password <%= associate ? '<em>(leave blank to keep current)</em>' : '' %></label><br />
+            <input type="password" name="password" <%= associate ? '' : 'required' %> />
+        </div>
+        <br />
+
+        <button type="submit"><%= associate ? 'Save Changes' : 'Create Associate' %></button>
+        <a href="/admin/associates">Cancel</a>
+    </form>
+</main>
+
+<%- include('../partials/footer') %>

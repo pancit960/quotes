@@ -1,0 +1,28 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h1>Chicken Nugget Plant Repair</h1>
+    <h2>Login</h2>
+
+    <% if(typeof error !== 'undefined' && error) { %>
+        <p style="color:red"><%= error %></p>
+    <% } %>
+
+    <form method="POST" action="/auth/login">
+        <div>
+            <label for="userId">Username: </label>
+            <br />
+            <input type="text" id="userId" name="userId" required autofocus />
+        </div>
+        <br />
+        <div>
+            <label for="password">Password:</label>
+            <br />
+            <input type="password" id="password" name="password" required />
+        </div>
+        <br />
+        <button type="submit">Login</button>
+    </form>
+</main>
+
+<%- include('../partials/footer') %>

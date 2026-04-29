@@ -1,0 +1,92 @@
+<%- include('../partials/header') %>
+
+<main>
+    <h2>Search Quotes</h2>
+    <a href="/admin/dashboard">&larr; Back to Admin</a>
+
+    <br /><br />
+
+    <!--search form-->
+    <form method="GET" action="/admin/quotes">
+        <table cellpadding="4">
+            <tr>
+                <td><label>Status</label></td>
+                <td>
+                    <select name="status">
+                        <option value="">— Any —</option>
+                        <option value="draft"      <%= filters.status === 'draft'      ? 'selected' : '' %>>Draft</option>
+                        <option value="finalized"  <%= filters.status === 'finalized'  ? 'selected' : '' %>>Finalized</option>
+                        <option value="sanctioned" <%= filters.status === 'sanctioned' ? 'selected' : '' %>>Sanctioned</option>
+                        <option value="ordered"    <%= filters.status === 'ordered'    ? 'selected' : '' %>>Ordered</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Date From</label></td>
+                <td><input type="date" name="dateFrom" value="<%= filters.dateFrom || '' %>" /></td>
+            </tr>
+            <tr>
+                <td><label>Date To</label></td>
+                <td><input type="date" name="dateTo" value="<%= filters.dateTo || '' %>" /></td>
+            </tr>
+            <tr>
+                <td><label>Associate ID</label></td>
+                <td><input type="number" name="associateId" value="<%= filters.associateId || '' %>" /></td>
+            </tr>
+            <tr>
+                <td><label>Customer ID</label></td>
+                <td><input type="number" name="customerId" value="<%= filters.customerId || '' %>" /></td>
+            </tr>
+        </table>
+        <br />
+        <button type="submit">Search</button>
+        <a href="/admin/quotes">Clear</a>
+    </form>
+
+    <hr />
+
+    <!--results-->
+    <% if (typeof quotes !== 'undefined') { %>
+        <h3>Results (<%= quotes.length %>)</h3>
+
+        <% if (quotes.length === 0) { %>
+            <p>No quotes found.</p>
+        <% } else { %>
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Associate</th>
+                        <th>Status</th>
+                        <th>Subtotal</th>
+                        <th>Total</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% quotes.forEach(function(quote) { %>
+                        <tr>
+                            <td><%= quote.id %></td>
+                            <td><%= quote.customer_name %></td>
+                            <td><%= quote.associate_name %></td>
+                            <td><%= quote.quote_status %></td>
+                            <td>$<%= parseFloat(quote.subtotal).toFixed(2) %></td>
+                            <td>$<%= parseFloat(quote.final_total).toFixed(2) %></td>
+                            <td><%= new Date(quote.created_at).toLocaleDateString() %></td>
+                            <td>
+                                <form method="POST" action="/admin/quotes/<%= quote.id %>/delete" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Delete quote #<%= quote.id %>?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    <% } %>
+
+</main>
+
+<%- include('../partials/footer') %>

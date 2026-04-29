@@ -1,0 +1,133 @@
+<%- include('../partials/header') %>
+ 
+<main>
+    <h2>Quote #<%= quote.id %></h2>
+    <a href="/associate/dashboard">&larr; Back to My Quotes</a>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+        <p style="color:green;"><%= success %></p>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+
+    <!--quote information -->
+    <h3>Quote Info</h3>
+    <table border="1" cellpadding="6" cellspacing="0">
+        <tr><th>Customer</th><td><%= quote.customer_name %></td></tr>
+        <tr><th>Email</th><td><%= quote.customer_email %></td></tr>
+        <tr><th>Status</th><td><%= quote.quote_status %></td></tr>
+        <tr><th>Created</th><td><%= new Date(quote.created_at).toLocaleDateString() %></td></tr>
+        <% if (quote.finalized_at) { %>
+            <tr><th>Finalized</th><td><%= new Date(quote.finalized_at).toLocaleDateString() %></td></tr>
+        <% } %>
+    </table>
+
+    <!--update email in draft-->
+    <% if (quote.quote_status === 'draft') { %>
+        <br />
+        <h3>Update Customer Email</h3>
+        <form method="POST" action="/associate/quotes/<%= quote.id %>/email">
+            <input type="hidden" name="_method" value="PUT" />
+            <input type="email" name="customerEmail" value="<%= quote.customer_email %>" required />
+            <button type="submit">Update Email</button>
+        </form>
+    <% } %>
+    
+    <hr />
+ 
+    <!--quote line items -->
+    <h3>Line Items</h3>
+    <% if (items.length === 0) { %>
+        <p>No line items for this quote.</p>
+    <% } else { %>
+        <table border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <% if (quote.quote_status === 'draft') { %><th>Actions</th><% } %>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(function(item, i) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= item.description %></td>
+                        <td>$<%= parseFloat(item.price).toFixed(2) %></td>
+                        <% if (quote.quote_status === 'draft') { %>
+                            <td>
+                                <form method="POST" action="/associate/quotes/<%= quote.id %>/items/<%= item.id %>/delete" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Remove this item?')">Remove</button>
+                                </form>
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+
+    <!--totals-->
+    <br />
+    <table cellpadding="4">
+        <tr><td><strong>Subtotal</strong></td><td>$<%= parseFloat(quote.subtotal).toFixed(2) %></td></tr>
+        <tr><td><strong>Total</strong></td><td>$<%= parseFloat(quote.final_total).toFixed(2) %></td></tr>
+    </table>
+
+    <!--add line item for a draft-->
+    <% if (quote.quote_status === 'draft') { %>
+        <br />
+        <h3>Add Line Item</h3>
+        <form method="POST" action="/associate/quotes/<%= quote.id %>/items">
+            <div>
+                <label>Description</label><br />
+                <input type="text" name="description" required style="width:400px;" />
+            </div>
+            <br />
+            <div>
+                <label>Price ($)</label><br />
+                <input type="number" name="price" step="0.01" min="0" required />
+            </div>
+            <br />
+            <button type="submit">Add Item</button>
+        </form>
+    <% } %>
+    <hr />
+
+    <!--secret notes-->
+    <h3>Secret Notes</h3>
+ 
+    <% if (notes.length === 0) { %>
+        <p>No notes yet.</p>
+    <% } else { %>
+        <% notes.forEach(function(note) { %>
+            <div style="border:1px solid #ccc; padding:8px; margin-bottom:8px;">
+                <strong><%= note.note_author %></strong><br />
+                <p><%= note.note %></p>
+            </div>
+        <% }) %>
+    <% } %>
+ 
+    <!--add a note-->
+    <% if (quote.quote_status === 'draft') { %>
+        <form method="POST" action="/associate/quotes/<%= quote.id %>/notes">
+            <label>Add Secret Note</label><br />
+            <textarea name="note" rows="3" cols="50" required></textarea><br /><br />
+            <button type="submit">Add Note</button>
+        </form>
+    <% } %>
+
+    <!--finalize quote-->
+    <% if (quote.quote_status === 'draft') { %>
+        <h3>Finalize Quote</h3>
+        <p>Once finalized, you can no longer edit this quote. It will be sent to HQ for review.</p>
+        <form method="POST" action="/associate/quotes/<%= quote.id %>/finalize">
+            <button type="submit" onclick="return confirm('Finalize this quote? This cannot be undone.')">Finalize Quote</button>
+        </form>
+    <% } %>
+ 
+</main>
+
+<%- include('../partials/footer') %>

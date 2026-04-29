@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+ 
+<main>
+    <h2>Admin Dashboard</h2>
+ 
+    <ul>
+        <li><a href="/admin/associates">Manage Sales Associates</a></li>
+        <li><a href="/admin/quotes">Search Quotes</a></li>
+        <li><a href="/orders">View Orders</a></li>
+    </ul>
+ 
+    <!--overview of everything-->
+    <h3>Business Overview</h3>
+    <table border="1" cellpadding="6" cellspacing="0">
+        <tr><th>Total Associates</th><td><%= stats.associateCount %></td></tr>
+        <tr><th>Draft Quotes</th><td><%= stats.draftCount %></td></tr>
+        <tr><th>Finalized Quotes</th><td><%= stats.finalizedCount %></td></tr>
+        <tr><th>Sanctioned Quotes</th><td><%= stats.sanctionedCount %></td></tr>
+        <tr><th>Orders Placed</th><td><%= stats.orderedCount %></td></tr>
+    </table>
+</main>
+ 
+<%- include('../partials/footer') %>
+ 

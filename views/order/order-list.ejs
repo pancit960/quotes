@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+ 
+<main>
+    <h2>Purchase Orders — Sanctioned Quotes</h2>
+ 
+    <% if (typeof success !== 'undefined' && success) { %>
+        <p style="color:green;"><%= success %></p>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+ 
+    <% if (quotes.length === 0) { %>
+        <p>No sanctioned quotes ready for ordering.</p>
+    <% } else { %>
+        <table border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>Associate</th>
+                    <th>Total</th>
+                    <th>Sanctioned</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% quotes.forEach(function(quote) { %>
+                    <tr>
+                        <td><%= quote.id %></td>
+                        <td><%= quote.customer_name %></td>
+                        <td><%= quote.associate_name %></td>
+                        <td>$<%= parseFloat(quote.final_total).toFixed(2) %></td>
+                        <td><%= quote.sanctioned_at ? new Date(quote.sanctioned_at).toLocaleDateString() : '—' %></td>
+                        <td><a href="/orders/<%= quote.id %>">Place Order</a></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+ 
+    <hr />
+ 
+    <h2>Existing Purchase Orders</h2>
+ 
+    <% if (orders.length === 0) { %>
+        <p>No purchase orders yet.</p>
+    <% } else { %>
+        <table border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Quote #</th>
+                    <th>Customer</th>
+                    <th>Associate</th>
+                    <th>Amount</th>
+                    <th>Commission</th>
+                    <th>Processing Date</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(function(order) { %>
+                    <tr>
+                        <td><%= order.id %></td>
+                        <td><%= order.quote_id %></td>
+                        <td><%= order.customer_name %></td>
+                        <td><%= order.associate_name %></td>
+                        <td>$<%= parseFloat(order.quote_amount).toFixed(2) %></td>
+                        <td>$<%= parseFloat(order.commission_amt || 0).toFixed(2) %></td>
+                        <td><%= order.processing_date ? new Date(order.processing_date).toLocaleDateString() : '—' %></td>
+                        <td><%= new Date(order.created).toLocaleDateString() %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+ 
+</main>
+ 
+<%- include('../partials/footer') %>

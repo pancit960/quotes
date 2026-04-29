@@ -1,0 +1,159 @@
+<%- include('../partials/header') %>
+ 
+<main>
+    <h2>HQ Review — Quote #<%= quote.id %></h2>
+    <a href="/hq/dashboard">&larr; Back to HQ Dashboard</a>
+ 
+    <% if (typeof success !== 'undefined' && success) { %>
+        <p style="color:green;"><%= success %></p>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+ 
+    <!--quote information -->
+    <h3>Quote Info</h3>
+    <table border="1" cellpadding="6" cellspacing="0">
+        <tr><th>Customer</th><td><%= quote.customer_name %></td></tr>
+        <tr><th>Customer Email</th><td><%= quote.customer_email %></td></tr>
+        <tr><th>Associate</th><td><%= quote.associate_name %></td></tr>
+        <tr><th>Status</th><td><%= quote.quote_status %></td></tr>
+        <tr><th>Finalized</th><td><%= quote.finalized_at ? new Date(quote.finalized_at).toLocaleDateString() : '—' %></td></tr>
+        <% if (quote.sanctioned_at) { %>
+            <tr><th>Sanctioned</th><td><%= new Date(quote.sanctioned_at).toLocaleDateString() %></td></tr>
+        <% } %>
+    </table>
+ 
+    <hr />
+ 
+    <!--quote line items-->
+    <h3>Line Items</h3>
+ 
+    <% if (items.length === 0) { %>
+        <p>No line items.</p>
+    <% } else { %>
+        <table border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Price</th>
+                <% if (quote.quote_status === 'finalized') { %><th>Actions</th><% } %>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(function(item, i) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td>
+                        <% if (quote.quote_status === 'finalized') { %>
+                            <form method="POST" action="/hq/quotes/<%= quote.id %>/items/<%= item.id %>">
+                                <input type="text" name="description" value="<%= item.description %>" style="width:300px;" />
+                                <input type="number" name="price" value="<%= item.price %>" step="0.01" min="0" style="width:80px;" />
+                                <button type="submit">Save</button>
+                            </form>
+                        <% } else { %>
+                            <%= item.description %>
+                        <% } %>
+                        </td>
+                        <td>$<%= parseFloat(item.price).toFixed(2) %></td>
+                        <% if (quote.quote_status === 'finalized') { %>
+                            <td>
+                                <form method="POST" action="/hq/quotes/<%= quote.id %>/items/<%= item.id %>/delete">
+                                    <button type="submit" onclick="return confirm('Remove this item?')">Remove</button>
+                                </form>
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+ 
+    <!--adding line item in finalized quote-->
+    <% if (quote.quote_status === 'finalized') { %>
+        <br />
+        <h4>Add Line Item</h4>
+        <form method="POST" action="/hq/quotes/<%= quote.id %>/items">
+            <input type="text" name="description" placeholder="Description" required style="width:300px;" />
+            <input type="number" name="price" placeholder="Price" step="0.01" min="0" required style="width:80px;" />
+            <button type="submit">Add</button>
+        </form>
+    <% } %>
+ 
+    <hr />
+ 
+    <!--discount -->
+    <h3>Discount</h3>
+    <% if (quote.quote_status === 'finalized') { %>
+        <form method="POST" action="/hq/quotes/<%= quote.id %>/discount">
+            <label>
+                <input type="radio" name="discount_type" value="percentage" <%= quote.discount_type === 'percentage' ? 'checked' : '' %> /> Percentage (%)
+            </label>
+            &nbsp;
+            <label>
+                <input type="radio" name="discount_type" value="amount" <%= quote.discount_type === 'amount' ? 'checked' : '' %> /> Flat Amount ($)
+            </label>
+            <br /><br />
+            <label>Discount Value</label><br />
+            <input type="number" name="discount_val" value="<%= quote.discount_val || 0 %>" step="0.01" min="0" />
+            <button type="submit">Apply Discount</button>
+        </form>
+    <% } else { %>
+        <p>
+            <% if (quote.discount_type) { %>
+                <%= quote.discount_type === 'percentage' ? quote.discount_val + '%' : '$' + parseFloat(quote.discount_val).toFixed(2) %>
+            <% } else { %>
+                No discount applied.
+            <% } %>
+        </p>
+    <% } %>
+ 
+    <!--totals-->
+    <br />
+    <table cellpadding="4">
+        <tr><td><strong>Subtotal</strong></td><td>$<%= parseFloat(quote.subtotal).toFixed(2) %></td></tr>
+        <% if (quote.discount_val && parseFloat(quote.discount_val) > 0) { %>
+            <tr><td><strong>Discount</strong></td><td>-$<%= parseFloat(quote.subtotal - quote.final_total).toFixed(2) %></td></tr>
+        <% } %>
+        <tr><td><strong>Total</strong></td><td>$<%= parseFloat(quote.final_total).toFixed(2) %></td></tr>
+    </table>
+ 
+    <hr />
+ 
+    <!--secret notes-->
+    <h3>Secret Notes</h3>
+ 
+    <% if (notes.length === 0) { %>
+        <p>No notes.</p>
+    <% } else { %>
+        <% notes.forEach(function(note) { %>
+            <div style="border:1px solid #ccc; padding:8px; margin-bottom:8px;">
+                <strong><%= note.note_author %></strong>
+                <p><%= note.note %></p>
+            </div>
+        <% }) %>
+    <% } %>
+ 
+    <form method="POST" action="/hq/quotes/<%= quote.id %>/notes">
+        <label>Add Secret Note</label><br />
+        <textarea name="note" rows="3" cols="50" required></textarea><br /><br />
+        <button type="submit">Add Note</button>
+    </form>
+ 
+    <hr />
+ 
+    <!--sanction quote-->
+    <% if (quote.quote_status === 'finalized') { %>
+        <h3>Sanction Quote</h3>
+        <p>Sanctioning will send the quote to the customer via email.</p>
+        <form method="POST" action="/hq/quotes/<%= quote.id %>/sanction">
+            <button type="submit" onclick="return confirm('Sanction this quote and email the customer?')">
+                Sanction &amp; Send to Customer
+            </button>
+        </form>
+    <% } %>
+ 
+</main>
+ 
+<%- include('../partials/footer') %>
